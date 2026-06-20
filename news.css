@@ -1,0 +1,233 @@
+:root {
+    --bg-color: #0b0f19;
+    --card-bg: #131a26;
+    --text-color: #f3f4f6;
+    --text-muted: #9ca3af;
+    --accent-color: #3b82f6;
+    --accent-hover: #2563eb;
+    --border-color: #1f2937;
+    --error-color: #ef4444;
+    --max-width: 1100px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 60px;
+}
+
+header {
+    background-color: rgba(19, 26, 38, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+}
+
+.app-container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.logo a {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ffffff !important;
+    text-decoration: none;
+    letter-spacing: -1px;
+}
+
+#nav-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 24px;
+    align-items: center;
+}
+
+#nav-menu a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+#nav-menu a:hover,
+#nav-menu a.active {
+    color: var(--accent-color);
+}
+
+main {
+    max-width: var(--max-width);
+    margin: 40px auto 0 auto;
+    padding: 0 20px;
+}
+
+main h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+main > p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.news-slider-wrapper {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding: 10px 0;
+}
+
+.news-slider {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 20px;
+}
+
+.news-slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.news-slider::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+.news-slider::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.news-slider::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.article-card {
+    flex: 0 0 calc(100% - 40px);
+    max-width: 600px;
+    scroll-snap-align: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.article-card:hover {
+    border-color: #374151;
+}
+
+.article-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.category {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--accent-color);
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.article-title {
+    margin: 10px 0;
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.article-content {
+    color: #ccc;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid #333;
+    padding-top: 10px;
+}
+
+.read-more-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.loading-msg,
+.error-msg, 
+.no-data-msg {
+    flex: 0 0 100%;
+    text-align: center;
+    padding: 40px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    header {
+        position: relative;
+    }
+    
+    .app-container {
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    #nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    main h1 {
+        font-size: 2rem;
+    }
+    
+    .article-card {
+        flex: 0 0 100%;
+        padding: 20px;
+    }
+
+    .article-title {
+        font-size: 1.4rem;
+    }
+}
