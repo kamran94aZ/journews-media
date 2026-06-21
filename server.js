@@ -24,7 +24,7 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MONGODB Bağlantısı
+
 mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/journews")
     .then(() => console.log('Secure connection established with MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
