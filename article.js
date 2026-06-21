@@ -1,4 +1,4 @@
-llet db = {
+let db = {
     articles: []
 };
 
