@@ -14,7 +14,6 @@ app.use(helmet({
     crossOriginEmbedderPolicy: false
 }));
 
-// CORS - Bütün sorğulara icazə veririk
 app.use(cors({
     origin: '*', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -30,15 +29,12 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/journews")
     .then(() => console.log('Secure connection established with MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
-// ... (Article Schema və digər kodların olduğu kimi qalır)
 
-// Routes (Düzgün yönləndirmə)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'article.html'));
 });
 
-// API Endpoints...
-// (Kodun qalan hissəsi olduğu kimi qalır)
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
