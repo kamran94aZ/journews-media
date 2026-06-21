@@ -9,7 +9,6 @@ const path = require('path');
 dotenv.config();
 const app = express();
 
-// HELMET - CSP-ni tamamilə deaktiv edirik (bu, bütün "refused" xətalarını öldürəcək)
 app.use(helmet({
     contentSecurityPolicy: false, 
     crossOriginEmbedderPolicy: false
