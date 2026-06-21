@@ -4,7 +4,7 @@ let db = {
 
 async function fetchData() {
     try {
-        const response = await fetch('http://localhost:3000/api/articles');
+        const response = await fetch('/api/articles');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -12,7 +12,6 @@ async function fetchData() {
         const jsonResponse = await response.json();
         
         if (jsonResponse.status === 'success' && jsonResponse.data) {
-            // Standardizing case sensitivity to lower-case for safe matching
             db.articles = jsonResponse.data.filter(article => 
                 article.category && article.category.toLowerCase() === 'science'
             );
@@ -22,7 +21,6 @@ async function fetchData() {
         renderAll();
     } catch (err) {
         console.error("Database connection error!", err);
-        // Fixed: Target the correct HTML container ID
         const container = document.getElementById("scienceContainer");
         if (container) {
             container.innerHTML = `<p style="color: #ff4a4a;">Secure connection to MongoDB failed.</p>`;
@@ -32,7 +30,7 @@ async function fetchData() {
 
 async function syncArticle(articleData) {
     try {
-        const response = await fetch('http://localhost:3000/api/articles', {
+        const response = await fetch('/api/articles', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(articleData)
@@ -51,7 +49,7 @@ async function addArticle() {
     const title = document.getElementById("articleTitleInput")?.value.trim();
     const content = document.getElementById("articleContentInput")?.value.trim();
     const link = document.getElementById("articleLinkInput")?.value.trim();
-    const category = "Science";
+    const category = "science";
 
     if (!title || !content) {
         alert("Title and content are required fields!");
