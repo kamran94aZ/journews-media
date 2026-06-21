@@ -4,8 +4,7 @@ let db = {
 
 async function fetchData() {
     try {
-        // Yalnız media kateqoriyasını gətirir
-        const response = await fetch('http://51.21.245.87:3000/api/articles?category=media');
+        const response = await fetch('/api/articles?category=media');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -30,7 +29,7 @@ async function fetchData() {
 
 async function syncArticle(articleData) {
     try {
-        const response = await fetch('http://51.21.245.87:3000/api/articles', {
+        const response = await fetch('/api/articles', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(articleData)
@@ -48,7 +47,7 @@ async function syncArticle(articleData) {
 async function addArticle() {
     const title = document.getElementById("articleTitleInput")?.value.trim();
     const content = document.getElementById("articleContentInput")?.value.trim();
-    const category = "media"; // Kateqoriya sabitləndi
+    const category = "media";
     const link = document.getElementById("articleLinkInput")?.value.trim();
 
     if (!title || !content) {
@@ -108,7 +107,7 @@ async function deleteArticle(id) {
     if (!confirm("Are you sure you want to permanently delete this article?")) return;
 
     try {
-        const response = await fetch(`http://51.21.245.87:3000/api/articles/${id}`, {
+        const response = await fetch(`/api/articles/${id}`, {
             method: 'DELETE'
         });
         const jsonResponse = await response.json();
