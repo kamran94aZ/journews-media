@@ -13,24 +13,24 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "http://localhost:3000"],
-            connectSrc: ["'self'", "http://localhost:3000"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://jour-news.com"],
+            connectSrc: ["'self'", "https://jour-news.com"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             imgSrc: ["'self'", "data:"]
         }
-    }
+    },
+    crossOriginEmbedderPolicy: false
 }));
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:5500', 'http://localhost:5500'],
+    origin: ['https://jour-news.com', 'http://localhost:3000', 'http://127.0.0.1:5500', 'http://localhost:5500'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json({ limit: '10kb'}));
-app.use(express.urlencoded({ extended: true, limit: '10kb'}));
-
-app.use(express.static('public'));
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Secure connection established with MongoDB'))
@@ -78,26 +78,21 @@ app.get('/api/articles', async (req, res) => {
             data: articles
         });
     } catch (err) {
-        res.status(500).json({ status: 'error', message: 'Failed to fetch articles'});
+        res.status(500).json({ status: 'error', message: 'Failed to fetch articles' });
     }
 });
 
 app.post('/api/articles', mongoSanitize({ replaceWith: '_' }), async (req, res) => {
     try {
-        let {title, content, category, link} = req.body;
+        let { title, content, category, link } = req.body;
         if (!title || !content) {
-            return res.status(400).json({ status: 'error', message: 'Title and content are required fields!'});
+            return res.status(400).json({ status: 'error', message: 'Title and content are required!' });
         }
 
         title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         content = content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-        const newArticle = await Article.create({
-            title,
-            content,
-            category,
-            link
-        });
+        const newArticle = await Article.create({ title, content, category, link });
         console.log(`New article saved to database: ${newArticle.title}`);
 
         res.status(201).json({
@@ -105,18 +100,18 @@ app.post('/api/articles', mongoSanitize({ replaceWith: '_' }), async (req, res) 
             message: 'Article successfully verified and saved to database!',
             data: newArticle
         });
-    } catch (error){
-        res.status(500).json({ status: 'error', message: 'Internal server error while saving article to database!'});
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: 'Internal server error while saving article' });
     }
 });
 
 app.put('/api/articles/:id', mongoSanitize({ replaceWith: '_' }), async (req, res) => {
     try {
-        const {id} = req.params;
-        let {title, content, category, link} = req.body;
+        const { id } = req.params;
+        let { title, content, category, link } = req.body;
 
         if (!title || !content) {
-            return res.status(400).json({ status: 'error', message: 'Title and content are required fields!'});
+            return res.status(400).json({ status: 'error', message: 'Title and content are required!' });
         }
 
         title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -129,22 +124,20 @@ app.put('/api/articles/:id', mongoSanitize({ replaceWith: '_' }), async (req, re
         );
 
         if (!updatedArticle) {
-            return res.status(404).json({ status: 'error', message: 'Article not found with this ID!'});
+            return res.status(404).json({ status: 'error', message: 'Article not found!' });
         }
 
         console.log(`Article updated in database: ${updatedArticle.title}`);
 
         res.status(200).json({
             status: 'success',
-            message: 'Article succesfully updated!',
+            message: 'Article successfully updated!',
             data: updatedArticle
         });
     } catch (error) {
-        res.status(500).json({ status: 'error', message: 'Internal server error while updating article in database!'});
+        res.status(500).json({ status: 'error', message: 'Internal server error while updating article' });
     }
 });
-
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
