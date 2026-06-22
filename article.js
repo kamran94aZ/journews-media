@@ -110,20 +110,6 @@ function renderAll() {
     });
 }
 
-async function deleteArticle(id) {
-    if (!confirm("Are you sure you want to permanently delete this article?")) return;
 
-    try {
-        const response = await fetch(`/api/articles/${id}`, {
-            method: 'DELETE'
-        });
-        const jsonResponse = await response.json();
-        if (jsonResponse.status === 'success') {
-            await fetchData();
-        }
-    } catch (err) {
-        console.error("Error executing delete command:", err);
-    }
-}
 
 fetchData();
