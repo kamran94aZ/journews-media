@@ -137,8 +137,9 @@ app.put('/api/articles/:id', mongoSanitize({ replaceWith: '_' }), async (req, re
     }
 });
 
+// server.js faylını aç və bu hissəni tap:
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, '51.21.245.87', () => {
-    console.log(`JourNews Server is running securely on 51.21.245.87:${PORT}.`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
