@@ -128,4 +128,4 @@ async function deleteArticle(id) {
     }
 }
 
-fetchData();
+fetchData()
