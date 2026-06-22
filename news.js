@@ -1,5 +1,5 @@
-let db = { news: [] };
-const API_URL = 'http://51.21.245.87:3000/api/articles';
+let db = { articles: [] };
+const API_URL = 'https://journews-media.onrender.com/api/articles';
 
 async function fetchData() {
     try {
