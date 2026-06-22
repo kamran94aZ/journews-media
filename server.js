@@ -9,7 +9,6 @@ const path = require('path');
 dotenv.config();
 const app = express();
 
-
 app.use(helmet({
     contentSecurityPolicy: false, 
     crossOriginEmbedderPolicy: false
@@ -24,8 +23,6 @@ app.use(cors({
 app.use(express.json({ limit: '10kb'}));
 app.use(express.urlencoded({ extended: true, limit: '10kb'}));
 
-
-const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(process.env.MONGO_URI)
@@ -140,9 +137,8 @@ app.put('/api/articles/:id', mongoSanitize({ replaceWith: '_' }), async (req, re
     }
 });
 
-
-
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`JourNews Server is running securely on port ${PORT}.`);
+
+app.listen(PORT, '51.21.245.87', () => {
+    console.log(`JourNews Server is running securely on 51.21.245.87:${PORT}.`);
 });
