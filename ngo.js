@@ -1,23 +1,20 @@
-let db = {
-    articles: []
-};
+let db = { articles: [] };
+const API_URL = 'http://51.21.245.87:3000/api/articles';
 
 async function fetchData() {
     try {
-        const response = await fetch('/api/articles');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        
+        const response = await fetch(API_URL);
         const jsonResponse = await response.json();
-        
-        if (jsonResponse.status === 'success' && jsonResponse.data) {
-            db.articles = jsonResponse.data.filter(article => 
-                article.category && article.category.toLowerCase() === 'ngo'
-            );
-        } else {
-            db.articles = [];
-        }
+        db.articles = (jsonResponse.status === 'success') ? jsonResponse.data.filter(a => a.category === 'ngo') : [];
+        renderAll();
+    } catch (err) { console.error(err); }
+}
+
+async function syncArticle(articleData) {
+    await fetch(API_URL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(articleData) });
+    await fetchData();
+}
+
         renderAll();
     } catch (err) {
         console.error("Database connection error!", err);
