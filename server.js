@@ -25,10 +25,6 @@ app.use(express.urlencoded({ extended: true, limit: '10kb'}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Secure connection established with MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
-
 const articleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -129,7 +125,7 @@ app.put('/api/articles/:id', mongoSanitize({ replaceWith: '_' }), async (req, re
 
         res.status(200).json({
             status: 'success',
-            message: 'Article succesfully updated!',
+            message: 'Article successfully updated!',
             data: updatedArticle
         });
     } catch (error) {
@@ -137,9 +133,23 @@ app.put('/api/articles/:id', mongoSanitize({ replaceWith: '_' }), async (req, re
     }
 });
 
-// server.js faylını aç və bu hissəni tap:
+// Final Start Logic
+const dbURI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (!dbURI) {
+    console.error("ERROR: MONGO_URI is not defined in environment variables!");
+    process.exit(1);
+}
+
+mongoose.connect(dbURI)
+    .then(() => {
+        console.log('Secure connection established with MongoDB');
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
