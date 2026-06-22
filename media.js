@@ -4,26 +4,10 @@ const API_URL = 'http://51.21.245.87:3000/api/articles';
 async function fetchData() {
     try {
         const response = await fetch(`${API_URL}?category=media`);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        
         const jsonResponse = await response.json();
-        db.media = (jsonResponse.status === 'success') ? jsonResponse.data : [];
-        renderAll();
-    } catch (err) { console.error(err); }
-}
-
-async function syncArticle(articleData) {
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(articleData)
-    });
-    if ((await response.json()).status === 'success') await fetchData();
-}
-
-async function deleteArticle(id) {
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    await fetchData();
-}
-
+        db.media = (jsonResponse.status === 'success' && jsonResponse.data) ? jsonResponse.data : [];
         renderAll();
     } catch (err) {
         console.error("Database connection error!", err);
@@ -36,7 +20,7 @@ async function deleteArticle(id) {
 
 async function syncArticle(articleData) {
     try {
-        const response = await fetch('/api/articles', {
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(articleData)
@@ -114,7 +98,7 @@ async function deleteArticle(id) {
     if (!confirm("Are you sure you want to permanently delete this article?")) return;
 
     try {
-        const response = await fetch(`/api/articles/${id}`, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: 'DELETE'
         });
         const jsonResponse = await response.json();
