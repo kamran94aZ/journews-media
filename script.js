@@ -1,5 +1,27 @@
 // --- SECURED JAVASCRIPT INTERACTIVITY CONTROL LAYER ---
 document.addEventListener('DOMContentLoaded', () => {
+
+const API_URL = 'http://51.21.245.87:3000/api/articles';
+
+async function fetchArticles() {
+    try {
+        const response = await fetch(API_URL);
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const result = await response.json();
+        console.log("Articles successfully fetched:", result.data);
+        
+        return result.data;
+        
+    } catch (error) {
+        console.error("Error: Could not connect to the server.", error);
+    }
+}
+
+fetchArticles();
     
     // 1. Theme Switcher with Strict Validation
     const themeBtn = document.getElementById('theme-btn');
