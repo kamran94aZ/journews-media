@@ -2,7 +2,6 @@ let db = {
     articles: []
 };
 
-// Backend serverinizin IP və portu buraya əlavə edildi
 const API_URL = 'http://51.21.245.87:3000/api/articles';
 
 async function fetchData() {
