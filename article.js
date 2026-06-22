@@ -1,10 +1,10 @@
-let db = {
+et db = {
     articles: []
 };
 
 async function fetchData() {
     try {
-        const response = await fetch('/api/articles');
+        const response = await fetch('http://localhost:3000/api/articles');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -29,7 +29,7 @@ async function fetchData() {
 
 async function syncArticle(articleData) {
     try {
-        const response = await fetch('/api/articles', {
+        const response = await fetch('http://localhost:3000/api/articles', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(articleData)
@@ -110,6 +110,20 @@ function renderAll() {
     });
 }
 
+async function deleteArticle(id) {
+    if (!confirm("Are you sure you want to permanently delete this article?")) return;
 
+    try {
+        const response = await fetch(`http://localhost:3000/api/articles/${id}`, {
+            method: 'DELETE'
+        });
+        const jsonResponse = await response.json();
+        if (jsonResponse.status === 'success') {
+            await fetchData();
+        }
+    } catch (err) {
+        console.error("Error executing delete command:", err);
+    }
+}
 
 fetchData();
