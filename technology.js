@@ -1,21 +1,20 @@
-let db = {
-    articles: []
-};
+let db = { technology: [] };
+const API_URL = 'http://51.21.245.87:3000/api/articles';
 
 async function fetchData() {
     try {
-        const response = await fetch('/api/articles?category=technology');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        
+        const response = await fetch(`${API_URL}?category=technology`);
         const jsonResponse = await response.json();
-        
-        if (jsonResponse.status === 'success' && jsonResponse.data) {
-            db.technology = jsonResponse.data;
-        } else {
-            db.technology = [];
-        }
+        db.technology = (jsonResponse.status === 'success') ? jsonResponse.data : [];
+        renderAll();
+    } catch (err) { console.error(err); }
+}
+
+async function syncArticle(articleData) {
+    await fetch(API_URL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(articleData) });
+    await fetchData();
+}
+
 
         renderAll();
     } catch (err) {
