@@ -1,10 +1,12 @@
-et db = {
+let db = {
     articles: []
 };
 
+const API_URL = '/api/articles';
+
 async function fetchData() {
     try {
-        const response = await fetch('http://localhost:3000/api/articles');
+        const response = await fetch(API_URL);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -29,7 +31,7 @@ async function fetchData() {
 
 async function syncArticle(articleData) {
     try {
-        const response = await fetch('http://localhost:3000/api/articles', {
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(articleData)
@@ -114,7 +116,7 @@ async function deleteArticle(id) {
     if (!confirm("Are you sure you want to permanently delete this article?")) return;
 
     try {
-        const response = await fetch(`http://localhost:3000/api/articles/${id}`, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: 'DELETE'
         });
         const jsonResponse = await response.json();
